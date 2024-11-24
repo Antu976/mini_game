@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+count=0
+# bornage des limtes du nbre cible aléatoire
+nbre_min=1
+nbre_max=100
+
+#génération du nombre aléatoire
+nbre_aleatoire=$(shuf -i $nbre_min-$nbre_max -n 1)
+echo "$nbre_aleatoire"
+
+# entrée dnas ma bloucle
+while [[ $proposition -ne $nbre_aleatoire && $count -lt 5 ]]; do
+
+    read -p "Veuillez entrez votre proposition : " proposition
+    echo "$proposition"
+
+    # vérification si les nombres sont bien valides
+    if [[ $proposition =~ ^[0-9]+$ ]]; then
+        # vérification des propositions
+
+        if [ $proposition -gt $nbre_aleatoire ]; then
+            echo "Trop haut !"
+        elif [ $proposition -lt $nbre_aleatoire ]; then
+            echo "Trop bas !"
+
+        else
+
+            echo "Félicitation ! vous avez trouver le juste prix $nbre_aleatoire "
+            break
+        fi
+
+    else
+        echo "le nombre n'est pas valide"
+    fi
+
+    # incrémentation
+    ((count++))
+
+    tentatives_restants=$(echo "5-$count" | bc)
+    echo "vous êtes à $count essaie il reste $tentatives_restants tentative"
+
+    # atteint des tentatives
+    if [[ $count -ge 5 ]]; then
+        echo "Game over vous avez échoué."
+    fi
+
+done
